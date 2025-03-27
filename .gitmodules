@@ -1,15 +1,15 @@
 [submodule "repositories/sd-scripts"]
 	path = repositories/sd-scripts
-	url = https://github.com/kohya-ss/sd-scripts.git
-	commit = b78c0e2a69e52ce6c79abc6c8c82d1a9cabcf05c
+	url = https://github.com/cf/sd-scripts.git
+	commit = 4d38727c90d577b3929492baebee9dbaa487e34f
 [submodule "repositories/leco"]
 	path = repositories/leco
 	url = https://github.com/p1atdev/LECO
 	commit = 9294adf40218e917df4516737afb13f069a6789d
 [submodule "repositories/batch_annotator"]
 	path = repositories/batch_annotator
-	url = https://github.com/ostris/batch-annotator
-	commit = 420e142f6ad3cc14b3ea0500affc2c6c7e7544bf
+	url = https://github.com/cf/batch-annotator
+	commit = f798b66fa160b2a28bbf54846ea81b580787d06e
 [submodule "repositories/ipadapter"]
 	path = repositories/ipadapter
 	url = https://github.com/tencent-ailab/IP-Adapter.git
