@@ -28,6 +28,7 @@ class GenerateConfig:
         self.guidance_scale = kwargs.get('guidance_scale', 7)
         self.sample_steps = kwargs.get('sample_steps', 20)
         self.prompt_2 = kwargs.get('prompt_2', None)
+        self.prompts_2 = kwargs.get('prompts_2', None)
         self.neg_2 = kwargs.get('neg_2', None)
         self.prompts = kwargs.get('prompts', None)
         self.guidance_rescale = kwargs.get('guidance_rescale', 0.0)
@@ -109,10 +110,26 @@ class GenerateProcess(BaseProcess):
                 self.sd.unet = torch.compile(self.sd.unet, mode="reduce-overhead")
 
             print(f"Generating {len(self.generate_config.prompts)} images")
+
+            # Determine whether to use prompts_2 or the fixed prompt_2
+            if self.generate_config.prompts_2 is not None:
+                if len(self.generate_config.prompts_2) == len(self.generate_config.prompts):
+                    prompt_2_iterable = self.generate_config.prompts_2
+                else:
+                    logging.warning(
+                        "Length of 'prompts_2' (%d) does not match 'prompts' (%d). Using fixed 'prompt_2' instead.",
+                        len(self.generate_config.prompts_2),
+                        len(self.generate_config.prompts)
+                    )
+                    prompt_2_iterable = [self.generate_config.prompt_2] * len(self.generate_config.prompts)
+            else:
+                prompt_2_iterable = [self.generate_config.prompt_2] * len(self.generate_config.prompts)
+
+
             # build prompt image configs
             prompt_image_configs = []
             for _ in range(self.generate_config.num_repeats):
-                for prompt in self.generate_config.prompts:
+                for prompt, prompt_2 in zip(self.generate_config.prompts, prompt_2_iterable):
                     width = self.generate_config.width
                     height = self.generate_config.height
                     # prompt = self.clean_prompt(prompt)
@@ -123,7 +140,7 @@ class GenerateProcess(BaseProcess):
 
                     prompt_image_configs.append(GenerateImageConfig(
                         prompt=prompt,
-                        prompt_2=self.generate_config.prompt_2,
+                        prompt_2=prompt_2,
                         width=width,
                         height=height,
                         num_inference_steps=self.generate_config.sample_steps,
@@ -143,4 +160,5 @@ class GenerateProcess(BaseProcess):
             # cleanup
             del self.sd
             gc.collect()
-            torch.cuda.empty_cache()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()

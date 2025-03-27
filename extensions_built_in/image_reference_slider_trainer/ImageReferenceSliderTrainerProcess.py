@@ -20,7 +20,8 @@ from toolkit.basic import value_map
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 

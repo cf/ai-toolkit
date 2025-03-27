@@ -24,7 +24,8 @@ from diffusers.utils import load_image
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 
@@ -175,7 +176,8 @@ class ReferenceGenerator(BaseExtensionProcess):
                 seed = random.randint(0, 1000000)
 
             torch.manual_seed(seed)
-            torch.cuda.manual_seed(seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed(seed)
 
             # generate depth map
             image = midas_depth(
@@ -209,4 +211,5 @@ class ReferenceGenerator(BaseExtensionProcess):
         # cleanup
         del self.sd
         gc.collect()
-        torch.cuda.empty_cache()
+        if torch.cuda.is_available():
+                torch.cuda.empty_cache()

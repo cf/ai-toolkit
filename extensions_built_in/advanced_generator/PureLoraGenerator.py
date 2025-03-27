@@ -12,7 +12,8 @@ from toolkit.train_tools import get_torch_dtype
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 
@@ -99,4 +100,5 @@ class PureLoraGenerator(BaseExtensionProcess):
             # cleanup
             del self.sd
             gc.collect()
-            torch.cuda.empty_cache()
+            if torch.cuda.is_available():
+                    torch.cuda.empty_cache()

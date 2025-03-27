@@ -19,7 +19,8 @@ from .BaseSDTrainProcess import BaseSDTrainProcess, StableDiffusion
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 
@@ -181,7 +182,7 @@ class TrainSDRescaleProcess(BaseSDTrainProcess):
             flush()
 
             torch.set_rng_state(rng_state)
-            if cuda_rng_state is not None:
+            if cuda_rng_state is not None and torch.cuda.is_available():
                 torch.cuda.set_rng_state(cuda_rng_state)
             self.sd.unet.to(self.device_torch, dtype=dtype)
 

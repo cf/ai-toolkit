@@ -88,7 +88,8 @@ class BlankNetwork:
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 

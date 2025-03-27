@@ -122,7 +122,8 @@ class BlankNetwork:
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
     gc.collect()
 
 
@@ -394,8 +395,8 @@ class StableDiffusion:
             flush()
 
             if self.model_config.quantize:
-                print_acc("Quantizing T5")
-                quantize(text_encoder_3, weights=get_qtype(self.model_config.qtype))
+                #print_acc("Quantizing T5")
+                #quantize(text_encoder_3, weights=get_qtype(self.model_config.qtype))
                 freeze(text_encoder_3)
                 flush()
                 
@@ -773,7 +774,7 @@ class StableDiffusion:
                     self.print_and_status_update("Quantizing LLM")
                 else:
                     self.print_and_status_update("Quantizing T5")
-                quantize(text_encoder_2, weights=get_qtype(self.model_config.qtype))
+                #quantize(text_encoder_2, weights=get_qtype(self.model_config.qtype))
                 freeze(text_encoder_2)
                 flush()
                 

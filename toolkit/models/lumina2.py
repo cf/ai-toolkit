@@ -556,7 +556,8 @@ class Lumina2Transformer2DModel(ModelMixin, ConfigMixin, PeftAdapterMixin):
         output = torch.stack(output, dim=0)
 
         if do_profile:
-            torch.cuda.synchronize()  # Make sure all CUDA ops are done
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()  # Make sure all CUDA ops are done
             prof.stop()
             
             print("\n==== Profile Results ====")

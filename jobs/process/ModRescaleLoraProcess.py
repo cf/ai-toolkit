@@ -97,8 +97,8 @@ class ModRescaleLoraProcess(BaseProcess):
         del new_state_dict
         del source_state_dict
         del source_meta
-
-        torch.cuda.empty_cache()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         gc.collect()
 
         print(f"Saved to {self.output_path}")

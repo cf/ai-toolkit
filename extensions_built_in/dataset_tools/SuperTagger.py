@@ -20,7 +20,8 @@ img_ext = ['.jpg', '.jpeg', '.png', '.webp']
 
 
 def flush():
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     gc.collect()
 
 

@@ -22,6 +22,10 @@ import argparse
 from toolkit.job import get_job
 from toolkit.accelerator import get_accelerator
 from toolkit.print import print_acc, setup_log_to_file
+import multiprocessing as mp
+
+if __name__ == "__main__":
+    mp.set_start_method('spawn', force=True)  # Add this line to set 'spawn' as the start method
 
 accelerator = get_accelerator()
 

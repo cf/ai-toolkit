@@ -6,7 +6,7 @@ import time
 from typing import TYPE_CHECKING, Union, List
 import sys
 
-from torch.cuda.amp import GradScaler
+from torch.amp import GradScaler
 
 from toolkit.paths import SD_SCRIPTS_ROOT
 
@@ -114,7 +114,8 @@ def get_noise_from_latents(latents):
     noise = []
     for seed in seed_list:
         torch.manual_seed(seed)
-        torch.cuda.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed(seed)
         noise.append(torch.randn_like(latents[0]))
     return torch.stack(noise)
 
