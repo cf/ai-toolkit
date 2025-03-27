@@ -8,7 +8,7 @@
 	commit = 9294adf40218e917df4516737afb13f069a6789d
 [submodule "repositories/batch_annotator"]
 	path = repositories/batch_annotator
-	url = https://github.com/cf/batch-annotator
+	url = https://github.com/cf/batch-annotator.git
 	commit = f798b66fa160b2a28bbf54846ea81b580787d06e
 [submodule "repositories/ipadapter"]
 	path = repositories/ipadapter
